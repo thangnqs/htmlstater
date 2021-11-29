@@ -1,0 +1,17 @@
+$breakpoint-up: (
+  'sm': 'screen and (min-width: 576px)',
+  'md': 'screen and (min-width: 768px)',
+  'lg': 'screen and (min-width: 992px)',
+  'xl': 'screen and (min-width: 1200px)',
+  'big': 'screen and (min-width: 1440px)',
+) !default;
+
+$breakpoint-down: (
+  'sm': 'screen and (max-width: 575.98px)',
+  'md': 'screen and (max-width: 767.98px)',
+  'lg': 'screen and (max-width: 991.98px)',
+  'xl': 'screen and (max-width: 1199.98px)',
+  'big': 'screen and (max-width: 1439.98px)',
+) !default;
+
+$font: sans-serif;

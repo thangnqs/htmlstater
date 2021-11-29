@@ -1,0 +1,107 @@
+{
+  "name": "Boilerplate_HTML",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  },
+  "scripts": {
+    "start": "run-s dist:dev dev",
+    "dev": "run-p watch:** server",
+    "dist:dev": "run-s clean build:scss cpx build:dev:* cpx",
+    "dist:prod": "run-s clean build:scss cpx build:prod:* cpx convert:eol",
+    "build:dev:js": "simplifyify \"src/**/*.js\" --exclude \"src/js/utils\" -o dist",
+    "build:prod:js": "simplifyify \"src/**/*.js\" --exclude \"src/js/utils\" -o dist",
+    "build:dev:pug": "pug src/pug --out dist -P",
+    "build:prod:pug": "pug src/pug --out dist -P",
+    "build:scss": "sass --style=expanded --no-source-map src/scss:cache_css",
+    "build:dev:css": "postcss \"cache_css/**/*.css\" --base cache_css --dir dist/css --verbose --config config/dev/postcss.config.js",
+    "build:prod:css": "postcss \"cache_css/**/*.css\" --base cache_css --dir dist/css --verbose --config config/prod/postcss.config.js",
+    "convert:eol": "find ./dist -name \"*.html\" -or -name \"*.css\" -or -name \"*.js\" -type f | xargs -n 10 nkf -W -w -Lw --overwrite",
+    "clean": "run-s clean:**",
+    "clean:cache_css": "rimraf \"cache_css/**/*\"",
+    "clean:dist": "rimraf \"dist/**/*\"",
+    "build-css": "node-sass --include-path scss src/scss/pages/main.css  dist/css/main.css --output-style compressed",
+    "cpx": "run-s cpx:*",
+    "cpx:assets": "cpx \"src/{img}/**/*.{png,jpg,gif,webp,avif,svg,ico}\" dist",
+    "cpx:cache_css": "cpx \"cache_css/**/*\" dist/css",
+    "watch:scss": "sass --watch src/scss:cache_css",
+    "watch:css": "postcss \"cache_css/**/*.css\" --watch --base cache_css --dir dist/css --verbose --config config/dev/postcss.config.js",
+    "watch:js": "simplifyify \"src/**/*.js\" --outfile \"dist/**/*.js\" --exclude \"src/js/utils\" --watch --debug",
+    "watch:pug": "pug src/pug --out dist -P -w",
+    "watch:assets": "cpx \"src/{img}/**/*.{png,jpg,gif,webp,avif,svg,ico}\" dist --watch",
+    "watch:cache_css": "cpx \"cache_css/**/*\" dist/css --watch",
+    "lint": "run-p lint:*",
+    "lint:css": "stylelint \"src/**/*.scss\" --syntax scss --config \"./.stylelintrc\"",
+    "lint:css:fix": "stylelint \"src/**/*.scss\" --syntax scss --config \"./.stylelintrc\" --fix",
+    "lint:js": "eslint \"src/**/*.js\" --ignore-pattern \"*.config.js\"",
+    "lint:fix:js": "eslint --fix \"src/**/*.js\" --ignore-pattern \"/*.config.js/\"",
+    "server": "browser-sync start --server \"dist\" --files \"dist\""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@commitlint/cli": "^9.1.2",
+    "@commitlint/config-conventional": "^11.0.0",
+    "@jsdevtools/simplifyify": "^8.0.3",
+    "autoprefixer": "^9.8.6",
+    "axios-mock-server": "^0.19.0",
+    "babelify": "^10.0.0",
+    "browser-sync": "^2.26.12",
+    "chokidar-cli": "^2.1.0",
+    "core-js": "^3.6.5",
+    "cpx": "^1.5.0",
+    "eslint": "^7.8.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.3.0",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^7.0.32",
+    "postcss-cli": "^7.1.2",
+    "prettier": "^2.1.1",
+    "pug": "^3.0.0",
+    "pug-cli": "1.0.0-alpha6",
+    "regenerator-runtime": "^0.13.7",
+    "rimraf": "^3.0.2",
+    "sass": "^1.26.10",
+    "stylelint": "^13.7.0",
+    "stylelint-config-standard": "^20.0.0",
+    "stylelint-order": "^4.1.0",
+    "stylelint-scss": "^3.18.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "lint-staged": {
+    "*.{js,scss}": "prettier --write",
+    "*.js": "eslint --cache --fix --ignore-pattern \"*.config.js\"",
+    "*.{scss}": "stylelint --syntax scss --config \"./.stylelintrc\" --fix"
+  },
+  "dependencies": {
+    "axios": "^0.20.0",
+    "bootstrap": "^3.3.6",
+    "glyphicons": "^0.2.0",
+    "lodash": "^4.17.21",
+    "node-sass": "^6.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-modal": "^3.13.1",
+    "ress": "^3.0.0",
+    "scss-reset": "^1.2.2",
+    "tailwindcss": "^2.1.2"
+  }
+}
